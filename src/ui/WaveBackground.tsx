@@ -42,8 +42,8 @@ export default function WaveBackground({ animate = true }: { animate?: boolean }
 
     function render(t: number) {
       ctx!.clearRect(0, 0, w, h)
-      const COLS = mobile ? 54 : 100
-      const ROWS = mobile ? 34 : 54
+      const COLS = mobile ? 80 : 150
+      const ROWS = mobile ? 46 : 74
       const cx = w * 0.5
       const horizon = h * 0.24
       const overscan = 170 // ряды уходят ниже кромки экрана → низ всегда заполнен
@@ -57,7 +57,7 @@ export default function WaveBackground({ animate = true }: { animate?: boolean }
       for (let i = 0; i < ROWS; i++) {
         const p = Math.pow(i / (ROWS - 1), 1.7)
         const rowY = horizon + p * (h + overscan - horizon)
-        const size = 0.6 + p * 2.3
+        const size = 0.4 + p * 1.15
         const baseA = 0.07 + p * 0.42
         for (let j = 0; j < COLS; j++) {
           const jx = j / (COLS - 1) - 0.5
