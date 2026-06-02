@@ -10,13 +10,17 @@ const PAINS = [
 ]
 
 const MODULES: { id: ModuleId; name: string; desc: string }[] = [
+  { id: 'dashboard', name: 'Дашборд руководителя', desc: 'Вся операционка на одном экране' },
   { id: 'timesheet', name: 'Табель учёта смен', desc: 'Часы и фонд оплаты в реальном времени' },
   { id: 'arrivals', name: 'Календарь заезда', desc: 'Воронка заезда кандидатов на объекты' },
   { id: 'recruitment', name: 'Подбор', desc: 'Закрытие потребности по объектам и спец.' },
-  { id: 'contracts', name: 'Договоры', desc: 'План-факт и маржа по заказчикам' },
   { id: 'documents', name: 'Документы', desc: 'Светофор патентов, медкнижек, регистраций' },
+  { id: 'housing', name: 'Проживание', desc: 'Загрузка общежитий и бюджет на койко-места' },
+  { id: 'contracts', name: 'Договоры', desc: 'План-факт и маржа по заказчикам' },
   { id: 'billing', name: 'Биллинг', desc: 'Акты из часов в один клик' },
   { id: 'margin', name: 'Маржинальность', desc: 'Живая юнит-экономика договоров' },
+  { id: 'worker', name: 'Кабинет вахтовика', desc: 'Мобильный ЛК: смены, расчёт, удержания' },
+  { id: 'client', name: 'Портал заказчика', desc: 'Заявки на персонал и акты для клиента' },
 ]
 
 export default function Overview({ go }: { go: (id: ModuleId) => void }) {
@@ -44,7 +48,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
             </CTA>
             <div className="flex items-center gap-2 text-sm text-white/55">
               <IconSpark className="h-4 w-4 text-accent" />
-              7 интерактивных модулей
+              11 интерактивных модулей
             </div>
           </div>
 
@@ -131,7 +135,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Stat label="Запуск пилота" value="дни" tone="accent" />
-            <Stat label="Модулей готово" value="7" />
+            <Stat label="Модулей готово" value="11" />
             <Stat label="Данные" value="в Б24" sub="ничего не выносим" />
             <Stat label="Кастомизация" value="100%" sub="под ваши процессы" />
           </div>

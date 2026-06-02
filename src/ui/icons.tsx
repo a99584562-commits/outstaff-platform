@@ -54,3 +54,15 @@ export const IconSpark = (p: P) => (
 export const IconBitrix = (p: P) => (
   <S {...p}><circle cx="12" cy="12" r="9" /><path d="M8 12a4 4 0 0 1 8 0M12 8v8" /></S>
 )
+export const IconGrid = (p: P) => (
+  <S {...p}><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></S>
+)
+export const IconHome = (p: P) => (
+  <S {...p}><path d="M4 11 12 4l8 7" /><path d="M6 10v10h12V10" /><path d="M10 20v-5h4v5" /></S>
+)
+export const IconPhone = (p: P) => (
+  <S {...p}><rect x="7" y="2" width="10" height="20" rx="2.5" /><path d="M11 18h2" /></S>
+)
+export const IconStore = (p: P) => (
+  <S {...p}><path d="M4 9 5 4h14l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6" /></S>
+)

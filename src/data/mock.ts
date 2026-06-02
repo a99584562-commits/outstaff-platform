@@ -155,6 +155,72 @@ export const DOCS: DocPerson[] = [
   { id: 'd7', name: 'Тошматов А.', citizenship: 'Кыргызстан', object: 'wb-elektrostal', patentUntil: 999, medUntil: 33, regUntil: 51 },
 ]
 
+// ── Расчёт ЗП (кабинет вахтовика) ───────────────────────────────────────────
+export const shiftHours = (s: ShiftCode[]) =>
+  s.reduce((a, c) => a + (c && c !== 'V' ? SHIFT_META[c].hours : 0), 0)
+export const shiftCount = (s: ShiftCode[]) => s.filter((c) => c === 'D' || c === 'N').length
+
+export interface Payroll {
+  avans: number // выплаченный аванс
+  housing: number // удержание за проживание
+  gear: number // удержание за спецодежду
+  fine: number // штрафы
+}
+export const PAYROLL: Record<string, Payroll> = {
+  e1: { avans: 8000, housing: 6000, gear: 1500, fine: 0 },
+  e2: { avans: 8000, housing: 6000, gear: 0, fine: 1000 },
+  e3: { avans: 10000, housing: 6000, gear: 0, fine: 0 },
+  e4: { avans: 8000, housing: 6500, gear: 1500, fine: 0 },
+  e5: { avans: 12000, housing: 6500, gear: 0, fine: 0 },
+  e6: { avans: 7000, housing: 5500, gear: 1500, fine: 500 },
+  e7: { avans: 7000, housing: 5500, gear: 0, fine: 0 },
+  e8: { avans: 10000, housing: 7000, gear: 0, fine: 0 },
+  e9: { avans: 8000, housing: 7000, gear: 1500, fine: 0 },
+}
+
+// ── Проживание / общежития ──────────────────────────────────────────────────
+export interface Hostel {
+  id: string
+  name: string
+  object: ObjectId
+  address: string
+  capacity: number
+  occupied: number
+  costPerBed: number // ₽/мес за койко-место
+}
+export const HOSTELS: Hostel[] = [
+  { id: 'h1', name: 'Хостел «Восток»', object: 'wb-elektrostal', address: 'Электросталь, ул. Мира, 12', capacity: 40, occupied: 36, costPerBed: 6000 },
+  { id: 'h2', name: 'Общежитие №3', object: 'ozon-tver', address: 'Тверь, пр-т Ленина, 48', capacity: 30, occupied: 22, costPerBed: 6500 },
+  { id: 'h3', name: 'Дом для рабочих', object: 'magnit-msk', address: 'Дмитров, ул. Заводская, 5', capacity: 45, occupied: 33, costPerBed: 5500 },
+  { id: 'h4', name: 'Хостел «Север»', object: 'xpark-spb', address: 'СПб, Кубинская ул., 78', capacity: 28, occupied: 24, costPerBed: 7000 },
+]
+
+// ── Портал заказчика: заявки на персонал ────────────────────────────────────
+export type RequestStatus = 'new' | 'inwork' | 'done'
+export const REQUEST_META: Record<RequestStatus, { label: string; tone: string }> = {
+  new: { label: 'Новая', tone: 'sky' },
+  inwork: { label: 'В работе', tone: 'amber' },
+  done: { label: 'Закрыта', tone: 'green' },
+}
+export interface ClientRequest {
+  id: string
+  client: string
+  object: ObjectId
+  specialty: Specialty
+  need: number
+  filled: number
+  status: RequestStatus
+  date: string
+}
+export const CLIENT_REQUESTS: ClientRequest[] = [
+  { id: 'r1', client: 'Wildberries', object: 'wb-elektrostal', specialty: 'Комплектовщик', need: 40, filled: 31, status: 'inwork', date: '05.06' },
+  { id: 'r2', client: 'Wildberries', object: 'wb-elektrostal', specialty: 'Кладовщик', need: 6, filled: 5, status: 'inwork', date: '08.06' },
+  { id: 'r3', client: 'Ozon', object: 'ozon-tver', specialty: 'Грузчик', need: 25, filled: 18, status: 'inwork', date: '03.06' },
+  { id: 'r4', client: 'Ozon', object: 'ozon-tver', specialty: 'Оператор ВПТ', need: 8, filled: 4, status: 'new', date: '10.06' },
+  { id: 'r5', client: 'Магнит', object: 'magnit-msk', specialty: 'Упаковщик', need: 30, filled: 24, status: 'inwork', date: '01.06' },
+  { id: 'r6', client: 'Магнит', object: 'magnit-msk', specialty: 'Разнорабочий', need: 15, filled: 15, status: 'done', date: '20.05' },
+]
+
 export const fmt = (n: number) => n.toLocaleString('ru-RU')
 export const fmtMoney = (n: number) => '₽ ' + n.toLocaleString('ru-RU')
 export const fmtMoneyShort = (n: number) =>

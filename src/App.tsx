@@ -7,42 +7,58 @@ import {
   IconContract,
   IconDocs,
   IconFunnel,
+  IconGrid,
+  IconHome,
   IconLock,
   IconMargin,
   IconOverview,
+  IconPhone,
+  IconStore,
   IconTimesheet,
 } from './ui/icons'
 import Overview from './modules/Overview'
+import Dashboard from './modules/Dashboard'
 import Timesheet from './modules/Timesheet'
 import Arrivals from './modules/Arrivals'
 import Recruitment from './modules/Recruitment'
-import Contracts from './modules/Contracts'
 import Documents from './modules/Documents'
+import Housing from './modules/Housing'
+import Contracts from './modules/Contracts'
 import Billing from './modules/Billing'
 import Margin from './modules/Margin'
+import Worker from './modules/Worker'
+import ClientPortal from './modules/ClientPortal'
 
 export type ModuleId =
   | 'overview'
+  | 'dashboard'
   | 'timesheet'
   | 'arrivals'
   | 'recruitment'
-  | 'contracts'
   | 'documents'
+  | 'housing'
+  | 'contracts'
   | 'billing'
   | 'margin'
+  | 'worker'
+  | 'client'
 
 const PASSWORD = 'staff2026'
 const STORAGE_KEY = 'smena_unlocked'
 
 const NAV: { id: ModuleId; label: string; icon: (p: { className?: string }) => JSX.Element; group: string }[] = [
   { id: 'overview', label: 'Обзор', icon: IconOverview, group: 'Платформа' },
+  { id: 'dashboard', label: 'Дашборд руководителя', icon: IconGrid, group: 'Платформа' },
   { id: 'timesheet', label: 'Табель смен', icon: IconTimesheet, group: 'Операции' },
   { id: 'arrivals', label: 'Заезд кандидатов', icon: IconCalendar, group: 'Операции' },
   { id: 'recruitment', label: 'Подбор', icon: IconFunnel, group: 'Операции' },
   { id: 'documents', label: 'Документы', icon: IconDocs, group: 'Операции' },
+  { id: 'housing', label: 'Проживание', icon: IconHome, group: 'Операции' },
   { id: 'contracts', label: 'Договоры', icon: IconContract, group: 'Финансы' },
   { id: 'billing', label: 'Биллинг / акты', icon: IconBilling, group: 'Финансы' },
   { id: 'margin', label: 'Маржинальность', icon: IconMargin, group: 'Финансы' },
+  { id: 'worker', label: 'Кабинет вахтовика', icon: IconPhone, group: 'Кабинеты' },
+  { id: 'client', label: 'Портал заказчика', icon: IconStore, group: 'Кабинеты' },
 ]
 
 export default function App() {
@@ -152,13 +168,17 @@ export default function App() {
 
         <main id="scroll-top" className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
           {active === 'overview' && <Overview go={setActive} />}
+          {active === 'dashboard' && <Dashboard go={setActive} />}
           {active === 'timesheet' && <Timesheet />}
           {active === 'arrivals' && <Arrivals />}
           {active === 'recruitment' && <Recruitment />}
-          {active === 'contracts' && <Contracts />}
           {active === 'documents' && <Documents />}
+          {active === 'housing' && <Housing />}
+          {active === 'contracts' && <Contracts />}
           {active === 'billing' && <Billing />}
           {active === 'margin' && <Margin />}
+          {active === 'worker' && <Worker />}
+          {active === 'client' && <ClientPortal />}
 
           <footer className="mt-12 flex flex-col items-center gap-1 border-t border-black/[0.06] pt-6 text-center text-xs text-ink-mute">
             <span>СМЕНА · платформа управления аутстаффингом на Битрикс24</span>
