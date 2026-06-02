@@ -24,18 +24,20 @@ export function Card({
   className,
   inner,
   pad = true,
+  glass = false,
 }: {
   children: React.ReactNode
   className?: string
   inner?: string
   pad?: boolean
+  glass?: boolean
 }) {
   return (
     <div className={cx('rounded-4xl bg-white/35 p-1.5 glass-tray', className)}>
       <div
         className={cx(
           'h-full rounded-[calc(2rem-0.375rem)]',
-          !inner && 'bg-white/80 glass-edge',
+          !inner && (glass ? 'glass-pane' : 'bg-white/80 glass-edge'),
           pad && 'p-5 sm:p-6',
           inner,
         )}

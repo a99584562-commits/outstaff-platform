@@ -95,7 +95,7 @@ export default function App() {
       {/* Sidebar */}
       <aside
         className={cx(
-          'fixed inset-y-0 left-0 z-40 w-72 transform bg-white/80 p-4 transition-transform duration-500 ease-spring hairline lg:static lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 w-72 transform overflow-y-auto bg-white/55 p-4 backdrop-blur-xl transition-transform duration-500 ease-spring hairline lg:sticky lg:top-0 lg:h-[100dvh] lg:self-start lg:translate-x-0',
           menuOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >

@@ -74,7 +74,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
         <Eyebrow>Боль аутстаффинга на «частичном» Битрикс24</Eyebrow>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PAINS.map((x) => (
-            <Card key={x.p}>
+            <Card key={x.p} glass>
               <div className="text-sm font-bold text-ink">{x.p}</div>
               <p className="mt-2 text-xs leading-relaxed text-ink-mute">{x.s}</p>
             </Card>
@@ -95,7 +95,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
               onClick={() => go(m.id)}
               className="group rounded-4xl bg-white/35 p-1.5 text-left glass-tray transition-all duration-500 ease-spring hover:-translate-y-0.5"
             >
-              <div className="flex h-full items-center justify-between rounded-[calc(2rem-0.375rem)] bg-white/80 p-5 glass-edge">
+              <div className="flex h-full items-center justify-between rounded-[calc(2rem-0.375rem)] p-5 glass-pane">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-bold tabular-nums text-accent-deep">0{i + 1}</span>
