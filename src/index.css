@@ -12,25 +12,24 @@ html {
 
 body {
   margin: 0;
-  background: #eef0ec;
+  background: linear-gradient(180deg, #eef4fc 0%, #e8eff9 48%, #dde7f5 100%);
   color: #14161b;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Цветной градиент-мэш под стеклянными поверхностями */
+/* Мягкое голубое свечение для глубины (под canvas-волной) */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -20;
   pointer-events: none;
   background:
-    radial-gradient(62% 52% at 10% 6%, rgba(15, 122, 95, 0.18), transparent 60%),
-    radial-gradient(52% 46% at 90% 2%, rgba(40, 120, 165, 0.13), transparent 55%),
-    radial-gradient(58% 52% at 80% 96%, rgba(15, 122, 95, 0.13), transparent 60%),
-    radial-gradient(52% 50% at 22% 102%, rgba(110, 100, 190, 0.10), transparent 60%);
+    radial-gradient(60% 48% at 12% 4%, rgba(150, 185, 235, 0.22), transparent 60%),
+    radial-gradient(54% 44% at 88% 0%, rgba(120, 165, 225, 0.16), transparent 55%),
+    radial-gradient(60% 50% at 75% 100%, rgba(130, 170, 230, 0.18), transparent 62%);
 }
 
 /* thin, refined scrollbars */

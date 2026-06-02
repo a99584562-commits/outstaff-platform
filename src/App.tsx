@@ -30,6 +30,7 @@ import Billing from './modules/Billing'
 import Margin from './modules/Margin'
 import Worker from './modules/Worker'
 import ClientPortal from './modules/ClientPortal'
+import WaveBackground from './ui/WaveBackground'
 
 export type ModuleId =
   | 'overview'
@@ -81,6 +82,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] lg:flex">
+      <WaveBackground />
       {/* Sidebar */}
       <aside
         className={cx(
@@ -227,10 +229,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
 
   return (
     <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-4">
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #0f7a5f, transparent 70%)' }}
-      />
+      <WaveBackground />
       <div className="relative w-full max-w-md animate-fade-up">
         <div className="rounded-4xl bg-white/25 p-1.5 backdrop-blur-md glass-tray">
           <div className="rounded-[calc(2rem-0.375rem)] bg-white/65 p-8 backdrop-blur-2xl glass-edge">
