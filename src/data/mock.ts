@@ -307,7 +307,6 @@ export interface SizIssue {
   items: { item: string; qty: number }[]
   date: string
   cost: number
-  returned: boolean
 }
 
 export const fmt = (n: number) => n.toLocaleString('ru-RU')
