@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Анимированный фон «дата-волна» из точек (в духе big-data визуализаций).
- * Лёгкий светло-голубой, рисуется на canvas, сидит фиксированным слоем
- * позади всего контента. Уважает prefers-reduced-motion и паузу вкладки.
+ * Анимированный фон «дата-волна» из точек.
+ * Оптимизирован: точки батчатся по уровням прозрачности (одна заливка на слой
+ * вместо тысяч вызовов arc), свечение искр — через заранее отрисованный спрайт
+ * (без дорогого shadowBlur). ~30fps, пауза вкладки, уважает reduced-motion.
  */
 export default function WaveBackground() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -11,7 +12,7 @@ export default function WaveBackground() {
   useEffect(() => {
     const canvas = ref.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
     let raf = 0
@@ -20,21 +21,31 @@ export default function WaveBackground() {
     let mobile = false
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // мерцающие частицы-искры над волной
+    // спрайт свечения для искр (рисуется один раз)
+    const glow = document.createElement('canvas')
+    glow.width = glow.height = 32
+    const gctx = glow.getContext('2d')!
+    const grd = gctx.createRadialGradient(16, 16, 0, 16, 16, 16)
+    grd.addColorStop(0, 'rgba(225, 238, 255, 1)')
+    grd.addColorStop(0.35, 'rgba(180, 210, 255, 0.6)')
+    grd.addColorStop(1, 'rgba(160, 200, 255, 0)')
+    gctx.fillStyle = grd
+    gctx.fillRect(0, 0, 32, 32)
+
     let sparks: { x: number; y: number; r: number; ph: number; sp: number }[] = []
     function seedSparks() {
-      const n = mobile ? 48 : 110
+      const n = mobile ? 34 : 70
       sparks = Array.from({ length: n }, () => ({
         x: Math.random(),
         y: 0.28 + Math.random() * 0.68,
-        r: 1.1 + Math.random() * 2.6,
+        r: 4 + Math.random() * 7,
         ph: Math.random() * 6.28,
         sp: 0.6 + Math.random() * 1.6,
       }))
     }
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.75)
       w = canvas!.clientWidth
       h = canvas!.clientHeight
       mobile = w < 640
@@ -47,17 +58,30 @@ export default function WaveBackground() {
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
 
+    // 6 слоёв прозрачности — батчим точки по уровню гребня
+    const LEVELS = 6
+    const MAXA = 0.5
+    const bucketsX: number[][] = Array.from({ length: LEVELS }, () => [])
+    const bucketsY: number[][] = Array.from({ length: LEVELS }, () => [])
+    const bucketsS: number[][] = Array.from({ length: LEVELS }, () => [])
+
     function render(t: number) {
       ctx!.clearRect(0, 0, w, h)
-      const COLS = mobile ? 58 : 108
-      const ROWS = mobile ? 30 : 46
+      const COLS = mobile ? 52 : 96
+      const ROWS = mobile ? 28 : 44
       const cx = w * 0.5
       const horizon = h * 0.26
 
+      for (let l = 0; l < LEVELS; l++) {
+        bucketsX[l].length = 0
+        bucketsY[l].length = 0
+        bucketsS[l].length = 0
+      }
+
       for (let i = 0; i < ROWS; i++) {
-        const p = Math.pow(i / (ROWS - 1), 1.7) // перспектива: ближе к низу — плотнее/крупнее
+        const p = Math.pow(i / (ROWS - 1), 1.7)
         const rowY = horizon + p * (h - horizon)
-        const size = 0.6 + p * 2.5
+        const size = 0.6 + p * 2.4
         const baseA = 0.07 + p * 0.42
         for (let j = 0; j < COLS; j++) {
           const jx = j / (COLS - 1) - 0.5
@@ -68,35 +92,46 @@ export default function WaveBackground() {
             Math.sin(jx * 2.6 - i * 0.26 + t * 0.7) * 0.42 +
             Math.sin(jx * 9 + i * 0.15 + t * 1.1) * 0.18
           const y = rowY - wave * (10 + p * 82)
-          const crest = Math.min(1, Math.max(0, wave * 0.5 + 0.5)) // 0..1, гребень волны ярче
-          const a = baseA * (0.32 + 0.68 * crest)
-          ctx!.fillStyle = `rgba(${78 + crest * 48}, ${132 + crest * 56}, ${214 + crest * 36}, ${a})`
-          ctx!.beginPath()
-          ctx!.arc(x, y, size, 0, 6.2832)
-          ctx!.fill()
+          const crest = wave * 0.5 + 0.5
+          const a = baseA * (0.32 + 0.68 * (crest < 0 ? 0 : crest > 1 ? 1 : crest))
+          let lvl = ((a / MAXA) * LEVELS) | 0
+          if (lvl < 0) lvl = 0
+          else if (lvl >= LEVELS) lvl = LEVELS - 1
+          bucketsX[lvl].push(x)
+          bucketsY[lvl].push(y)
+          bucketsS[lvl].push(size)
         }
       }
 
-      // искры со свечением
-      ctx!.shadowColor = 'rgba(150, 195, 255, 0.9)'
-      for (const s of sparks) {
-        const tw = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph)
-        const a = 0.18 + tw * 0.72
-        const x = s.x * w
-        const y = s.y * h
-        ctx!.shadowBlur = 6 + tw * 10
-        ctx!.fillStyle = `rgba(${205 + tw * 45}, ${225 + tw * 25}, 255, ${a})`
+      // одна заливка на слой
+      for (let l = 0; l < LEVELS; l++) {
+        const xs = bucketsX[l]
+        if (!xs.length) continue
+        const ys = bucketsY[l]
+        const ss = bucketsS[l]
+        ctx!.fillStyle = `rgba(96, 150, 214, ${(((l + 0.5) / LEVELS) * MAXA).toFixed(3)})`
         ctx!.beginPath()
-        ctx!.arc(x, y, s.r * (0.7 + tw * 0.7), 0, 6.2832)
+        for (let k = 0; k < xs.length; k++) {
+          const s = ss[k]
+          ctx!.rect(xs[k] - s, ys[k] - s, s * 2, s * 2)
+        }
         ctx!.fill()
       }
-      ctx!.shadowBlur = 0
+
+      // искры — спрайтом, с мерцанием через globalAlpha
+      for (const s of sparks) {
+        const tw = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph)
+        ctx!.globalAlpha = 0.18 + tw * 0.72
+        const r = s.r * (0.6 + tw * 0.7)
+        ctx!.drawImage(glow, s.x * w - r, s.y * h - r, r * 2, r * 2)
+      }
+      ctx!.globalAlpha = 1
     }
 
     let last = 0
     function frame(ts: number) {
       raf = requestAnimationFrame(frame)
-      if (ts - last < 33) return // ~30 fps — плавно и щадяще для батареи
+      if (ts - last < 40) return // ~25 fps — плавно и легко
       last = ts
       render(ts * 0.001)
     }
