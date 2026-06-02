@@ -100,7 +100,7 @@ export default function Contracts() {
           </div>
         </Card>
 
-        <Card className="lg:col-span-2" inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
+        <Card className="lg:col-span-2" inner="bg-ink/95 text-white glass-dark">
           <div className="flex items-center justify-between">
             <div>
               <div className="text-lg font-extrabold tracking-tight">{active.client}</div>

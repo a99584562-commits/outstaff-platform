@@ -138,7 +138,7 @@ export default function Worker() {
               ))}
             </ul>
           </Card>
-          <Card inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
+          <Card inner="bg-ink/95 text-white glass-dark">
             <div className="text-sm font-bold">Данные — из тех же источников</div>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
               Часы берутся из табеля, удержания за проживание — из модуля общежитий, ставка — из карточки

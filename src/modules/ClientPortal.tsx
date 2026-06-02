@@ -144,7 +144,7 @@ export default function ClientPortal() {
         </Card>
 
         <div className="space-y-4 lg:col-span-2">
-          <Card inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
+          <Card inner="bg-ink/95 text-white glass-dark">
             <div className="text-sm font-bold">Объект</div>
             <div className="mt-1 text-lg font-extrabold tracking-tight">{objId ? objName(objId) : '—'}</div>
             {contract && (

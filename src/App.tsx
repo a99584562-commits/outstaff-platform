@@ -95,7 +95,7 @@ export default function App() {
       {/* Sidebar */}
       <aside
         className={cx(
-          'fixed inset-y-0 left-0 z-40 w-72 transform bg-white/55 p-4 backdrop-blur-2xl transition-transform duration-500 ease-spring hairline lg:static lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 w-72 transform bg-white/80 p-4 transition-transform duration-500 ease-spring hairline lg:static lg:translate-x-0',
           menuOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
@@ -127,7 +127,7 @@ export default function App() {
           ))}
         </nav>
 
-        <div className="mt-6 rounded-2xl bg-white/45 p-4 backdrop-blur-sm glass-edge">
+        <div className="mt-6 rounded-2xl bg-white/70 p-4 glass-edge">
           <div className="flex items-center gap-2 text-xs font-semibold text-ink">
             <IconBitrix className="h-4 w-4 text-accent" />
             Работает поверх Битрикс24
@@ -260,8 +260,8 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
     <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-4">
       <WaveBackground />
       <div className="relative w-full max-w-md animate-fade-up">
-        <div className="rounded-4xl bg-white/25 p-1.5 backdrop-blur-md glass-tray">
-          <div className="rounded-[calc(2rem-0.375rem)] bg-white/65 p-8 backdrop-blur-2xl glass-edge">
+        <div className="rounded-4xl bg-white/35 p-1.5 glass-tray">
+          <div className="rounded-[calc(2rem-0.375rem)] bg-white/80 p-8 glass-edge">
             <div className="flex items-center gap-2.5">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-lg font-extrabold text-accent">
                 С

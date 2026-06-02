@@ -28,7 +28,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
   return (
     <div className="animate-fade-up space-y-6">
       {/* Hero */}
-      <Card inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark relative overflow-hidden" pad={false}>
+      <Card inner="bg-ink/95 text-white glass-dark relative overflow-hidden" pad={false}>
         <div
           className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-30 blur-3xl"
           style={{ background: 'radial-gradient(circle, #0f7a5f, transparent 70%)' }}
@@ -93,9 +93,9 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
             <button
               key={m.id}
               onClick={() => go(m.id)}
-              className="group rounded-4xl bg-white/25 p-1.5 text-left backdrop-blur-md glass-tray transition-all duration-500 ease-spring hover:-translate-y-0.5"
+              className="group rounded-4xl bg-white/35 p-1.5 text-left glass-tray transition-all duration-500 ease-spring hover:-translate-y-0.5"
             >
-              <div className="flex h-full items-center justify-between rounded-[calc(2rem-0.375rem)] bg-white/65 p-5 backdrop-blur-2xl glass-edge">
+              <div className="flex h-full items-center justify-between rounded-[calc(2rem-0.375rem)] bg-white/80 p-5 glass-edge">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-bold tabular-nums text-accent-deep">0{i + 1}</span>
