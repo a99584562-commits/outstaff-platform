@@ -23,29 +23,6 @@ export default function WaveBackground({ animate = true }: { animate?: boolean }
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const shouldAnimate = animate && !reduce
 
-    // спрайт свечения для искр (рисуется один раз)
-    const glow = document.createElement('canvas')
-    glow.width = glow.height = 32
-    const gctx = glow.getContext('2d')!
-    const grd = gctx.createRadialGradient(16, 16, 0, 16, 16, 16)
-    grd.addColorStop(0, 'rgba(225, 238, 255, 1)')
-    grd.addColorStop(0.35, 'rgba(180, 210, 255, 0.6)')
-    grd.addColorStop(1, 'rgba(160, 200, 255, 0)')
-    gctx.fillStyle = grd
-    gctx.fillRect(0, 0, 32, 32)
-
-    let sparks: { x: number; y: number; r: number; ph: number; sp: number }[] = []
-    function seedSparks() {
-      const n = mobile ? 34 : 70
-      sparks = Array.from({ length: n }, () => ({
-        x: Math.random(),
-        y: 0.28 + Math.random() * 0.7,
-        r: 4 + Math.random() * 7,
-        ph: Math.random() * 6.28,
-        sp: 0.6 + Math.random() * 1.6,
-      }))
-    }
-
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.75)
       w = canvas!.clientWidth
@@ -54,7 +31,6 @@ export default function WaveBackground({ animate = true }: { animate?: boolean }
       canvas!.width = Math.floor(w * dpr)
       canvas!.height = Math.floor(h * dpr)
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
-      seedSparks()
       if (!shouldAnimate) render(0)
     }
 
@@ -117,14 +93,6 @@ export default function WaveBackground({ animate = true }: { animate?: boolean }
         }
         ctx!.fill()
       }
-
-      for (const s of sparks) {
-        const tw = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph)
-        ctx!.globalAlpha = 0.18 + tw * 0.72
-        const r = s.r * (0.6 + tw * 0.7)
-        ctx!.drawImage(glow, s.x * w - r, s.y * h - r, r * 2, r * 2)
-      }
-      ctx!.globalAlpha = 1
     }
 
     resize()
