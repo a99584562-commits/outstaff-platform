@@ -66,3 +66,6 @@ export const IconPhone = (p: P) => (
 export const IconStore = (p: P) => (
   <S {...p}><path d="M4 9 5 4h14l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6" /></S>
 )
+export const IconShield = (p: P) => (
+  <S {...p}><path d="M12 3 5 6v6c0 4 3 6.5 7 8 4-1.5 7-4 7-8V6z" /><path d="M9 12l2 2 4-4" /></S>
+)

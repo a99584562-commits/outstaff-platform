@@ -15,6 +15,7 @@ const MODULES: { id: ModuleId; name: string; desc: string }[] = [
   { id: 'arrivals', name: 'Календарь заезда', desc: 'Воронка заезда кандидатов на объекты' },
   { id: 'recruitment', name: 'Подбор', desc: 'Закрытие потребности по объектам и спец.' },
   { id: 'documents', name: 'Документы', desc: 'Светофор патентов, медкнижек, регистраций' },
+  { id: 'siz', name: 'Выдача СИЗ', desc: 'Склад спецодежды и выдача комплектов' },
   { id: 'housing', name: 'Проживание', desc: 'Загрузка общежитий и бюджет на койко-места' },
   { id: 'contracts', name: 'Договоры', desc: 'План-факт и маржа по заказчикам' },
   { id: 'billing', name: 'Биллинг', desc: 'Акты из часов в один клик' },
@@ -48,7 +49,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
             </CTA>
             <div className="flex items-center gap-2 text-sm text-white/55">
               <IconSpark className="h-4 w-4 text-accent" />
-              11 интерактивных модулей
+              12 интерактивных модулей
             </div>
           </div>
 
@@ -135,7 +136,7 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Stat label="Запуск пилота" value="дни" tone="accent" />
-            <Stat label="Модулей готово" value="11" />
+            <Stat label="Модулей готово" value="12" />
             <Stat label="Данные" value="в Б24" sub="ничего не выносим" />
             <Stat label="Кастомизация" value="100%" sub="под ваши процессы" />
           </div>

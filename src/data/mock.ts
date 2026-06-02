@@ -265,6 +265,51 @@ export const CLIENT_REQUESTS: ClientRequest[] = [
   { id: 'r6', client: 'Магнит', object: 'magnit-msk', specialty: 'Разнорабочий', need: 15, filled: 15, status: 'done', date: '20.05' },
 ]
 
+// ── СИЗ / спецодежда: склад + нормы выдачи ──────────────────────────────────
+export interface SizItem {
+  id: string
+  name: string
+  unit: 'шт' | 'пара'
+  price: number
+  stock: number
+  min: number // минимальный остаток (порог дозаказа)
+  bySize?: boolean // выдаётся по размеру
+}
+export const SIZ: SizItem[] = [
+  { id: 's1', name: 'Каска защитная', unit: 'шт', price: 450, stock: 38, min: 20 },
+  { id: 's2', name: 'Перчатки рабочие', unit: 'пара', price: 90, stock: 14, min: 50 },
+  { id: 's3', name: 'Жилет сигнальный', unit: 'шт', price: 320, stock: 61, min: 30 },
+  { id: 's4', name: 'Ботинки с подноском', unit: 'пара', price: 2200, stock: 27, min: 25, bySize: true },
+  { id: 's5', name: 'Куртка утеплённая', unit: 'шт', price: 2800, stock: 16, min: 10, bySize: true },
+  { id: 's6', name: 'Брюки рабочие', unit: 'шт', price: 1200, stock: 42, min: 20, bySize: true },
+  { id: 's7', name: 'Респиратор FFP1', unit: 'шт', price: 180, stock: 9, min: 40 },
+  { id: 's8', name: 'Очки защитные', unit: 'шт', price: 250, stock: 33, min: 15 },
+]
+export const sizById = (id: string) => SIZ.find((s) => s.id === id)
+
+// норма комплекта СИЗ по специальности: [id позиции, кол-во]
+export const SIZ_NORMS: Record<Specialty, { item: string; qty: number }[]> = {
+  Комплектовщик: [{ item: 's3', qty: 1 }, { item: 's2', qty: 2 }],
+  Грузчик: [{ item: 's1', qty: 1 }, { item: 's3', qty: 1 }, { item: 's2', qty: 2 }, { item: 's4', qty: 1 }],
+  Кладовщик: [{ item: 's3', qty: 1 }, { item: 's2', qty: 1 }],
+  'Оператор ВПТ': [{ item: 's1', qty: 1 }, { item: 's3', qty: 1 }, { item: 's2', qty: 1 }, { item: 's8', qty: 1 }],
+  Упаковщик: [{ item: 's2', qty: 2 }, { item: 's7', qty: 1 }],
+  Разнорабочий: [{ item: 's1', qty: 1 }, { item: 's3', qty: 1 }, { item: 's2', qty: 2 }, { item: 's4', qty: 1 }, { item: 's5', qty: 1 }],
+}
+export const kitCost = (spec: Specialty) =>
+  SIZ_NORMS[spec].reduce((a, n) => a + (sizById(n.item)?.price ?? 0) * n.qty, 0)
+
+export interface SizIssue {
+  id: string
+  worker: string
+  specialty: Specialty
+  object: ObjectId
+  items: { item: string; qty: number }[]
+  date: string
+  cost: number
+  returned: boolean
+}
+
 export const fmt = (n: number) => n.toLocaleString('ru-RU')
 export const fmtMoney = (n: number) => '₽ ' + n.toLocaleString('ru-RU')
 export const fmtMoneyShort = (n: number) =>

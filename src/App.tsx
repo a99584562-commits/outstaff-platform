@@ -13,6 +13,7 @@ import {
   IconMargin,
   IconOverview,
   IconPhone,
+  IconShield,
   IconStore,
   IconTimesheet,
 } from './ui/icons'
@@ -22,6 +23,7 @@ import Timesheet from './modules/Timesheet'
 import Arrivals from './modules/Arrivals'
 import Recruitment from './modules/Recruitment'
 import Documents from './modules/Documents'
+import Siz from './modules/Siz'
 import Housing from './modules/Housing'
 import Contracts from './modules/Contracts'
 import Billing from './modules/Billing'
@@ -36,6 +38,7 @@ export type ModuleId =
   | 'arrivals'
   | 'recruitment'
   | 'documents'
+  | 'siz'
   | 'housing'
   | 'contracts'
   | 'billing'
@@ -53,6 +56,7 @@ const NAV: { id: ModuleId; label: string; icon: (p: { className?: string }) => J
   { id: 'arrivals', label: 'Заезд кандидатов', icon: IconCalendar, group: 'Операции' },
   { id: 'recruitment', label: 'Подбор', icon: IconFunnel, group: 'Операции' },
   { id: 'documents', label: 'Документы', icon: IconDocs, group: 'Операции' },
+  { id: 'siz', label: 'Выдача СИЗ', icon: IconShield, group: 'Операции' },
   { id: 'housing', label: 'Проживание', icon: IconHome, group: 'Операции' },
   { id: 'contracts', label: 'Договоры', icon: IconContract, group: 'Финансы' },
   { id: 'billing', label: 'Биллинг / акты', icon: IconBilling, group: 'Финансы' },
@@ -173,6 +177,7 @@ export default function App() {
           {active === 'arrivals' && <Arrivals />}
           {active === 'recruitment' && <Recruitment />}
           {active === 'documents' && <Documents />}
+          {active === 'siz' && <Siz />}
           {active === 'housing' && <Housing />}
           {active === 'contracts' && <Contracts />}
           {active === 'billing' && <Billing />}
