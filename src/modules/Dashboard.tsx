@@ -41,7 +41,7 @@ export default function Dashboard({ go }: { go: (id: ModuleId) => void }) {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard onClick={() => go('contracts')} label="Выручка / мес" value={fmtMoneyShort(revenue)} hint="по всем договорам" tone="accent" />
         <KpiCard onClick={() => go('margin')} label="Маржа / мес" value={fmtMoneyShort(margin)} hint="≈22% рентабельность" />
-        <KpiCard onClick={() => go('recruitment')} label="Укомплектованность" value={`${fillPct}%`} hint={`${headFact}/${headPlan} человек`} tone={fillPct >= 80 ? 'accent' : 'amber'} />
+        <KpiCard onClick={() => go('recruitment')} label="Закрыто вакансий" value={`${fillPct}%`} hint={`${headFact}/${headPlan} человек`} tone={fillPct >= 80 ? 'accent' : 'amber'} />
         <KpiCard onClick={() => go('documents')} label="Документы под риском" value={docRisk} hint="истекают ≤14 дней" tone={docRisk ? 'rose' : 'ink'} />
       </div>
 
@@ -148,13 +148,11 @@ function KpiCard({
       onClick={onClick}
       className="group rounded-4xl bg-black/[0.035] p-1.5 text-left hairline transition-all duration-500 ease-spring hover:-translate-y-0.5"
     >
-      <div className="h-full rounded-[calc(2rem-0.375rem)] bg-white p-4 hairline sm:p-5">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-mute">{label}</span>
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-black/5 text-ink-mute transition-all duration-500 ease-spring group-hover:translate-x-0.5 group-hover:bg-accent group-hover:text-white">
-            <IconArrow className="h-3.5 w-3.5" />
-          </span>
-        </div>
+      <div className="relative h-full rounded-[calc(2rem-0.375rem)] bg-white p-4 hairline sm:p-5">
+        <span className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-black/5 text-ink-mute transition-all duration-500 ease-spring group-hover:translate-x-0.5 group-hover:bg-accent group-hover:text-white sm:right-5 sm:top-5">
+          <IconArrow className="h-3.5 w-3.5" />
+        </span>
+        <span className="block pr-9 text-[11px] font-semibold uppercase leading-tight tracking-wider text-ink-mute">{label}</span>
         <div className={cx('mt-2 text-2xl font-extrabold tracking-tight tabular-nums sm:text-3xl', toneCls)}>{value}</div>
         <div className="mt-0.5 text-xs text-ink-mute">{hint}</div>
       </div>

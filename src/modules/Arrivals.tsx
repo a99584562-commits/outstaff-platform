@@ -36,12 +36,14 @@ export default function Arrivals() {
     setList((prev) => prev.map((c) => (c.id === id ? { ...c, status: 'failed' } : c)))
   }
 
+  const daysWithData = DAYS.filter((d) => visible.some((c) => c.day === d))
+
   return (
     <div className="animate-fade-up">
       <ModuleHead
         eyebrow="Логистика заезда"
         title="Календарь приезда кандидатов"
-        desc="Кто, когда и на какой объект заезжает. Кликом по карточке двигайте статус заезда по воронке, правым — фиксируйте срыв. Координатор видит всю картину на две недели вперёд."
+        desc="Кто, когда и на какой объект заезжает. Кликом по карточке двигайте статус заезда по воронке, крестиком — фиксируйте срыв. Координатор видит всю картину на две недели вперёд."
         right={
           <Segmented
             size="sm"
@@ -66,10 +68,11 @@ export default function Arrivals() {
               {ARRIVAL_META[s].label}
             </Badge>
           ))}
-          <span className="ml-auto text-xs text-ink-mute">Клик — следующий статус · долгое нажатие на ✕ — срыв</span>
+          <span className="ml-auto text-xs text-ink-mute">Клик — следующий статус · ✕ — срыв</span>
         </div>
 
-        <div className="overflow-x-auto p-4 pt-0 sm:p-5 sm:pt-0">
+        {/* Desktop: calendar grid */}
+        <div className="hidden overflow-x-auto p-4 pt-0 sm:p-5 sm:pt-0 md:block">
           <div className="grid min-w-[860px] grid-cols-7 gap-2">
             {DAYS.map((d) => {
               const dayCands = visible.filter((c) => c.day === d)
@@ -84,44 +87,37 @@ export default function Arrivals() {
                     <span className="text-sm font-bold tabular-nums text-ink">{d}</span>
                   </div>
                   <div className="space-y-1.5">
-                    {dayCands.map((c) => {
-                      const meta = ARRIVAL_META[c.status]
-                      return (
-                        <div
-                          key={c.id}
-                          onClick={() => advance(c.id)}
-                          className="group cursor-pointer rounded-xl bg-black/[0.025] p-2 transition-all duration-300 ease-spring hover:bg-black/[0.05] active:scale-[0.97]"
-                          title="Клик — продвинуть статус"
-                        >
-                          <div className="flex items-start justify-between gap-1">
-                            <span className="text-xs font-bold leading-tight text-ink">{c.name}</span>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                markFailed(c.id)
-                              }}
-                              className="rounded-md px-1 text-ink-mute opacity-0 transition-opacity hover:text-rose-500 group-hover:opacity-100"
-                              title="Отметить срыв"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          <div className="mt-0.5 text-[10px] leading-tight text-ink-mute">
-                            {c.specialty} · {objShort(c.object)}
-                          </div>
-                          <div className="mt-1.5">
-                            <Badge tone={meta.tone} dot>
-                              {meta.label}
-                            </Badge>
-                          </div>
-                        </div>
-                      )
-                    })}
+                    {dayCands.map((c) => (
+                      <CandidateCard key={c.id} c={c} onAdvance={() => advance(c.id)} onFail={() => markFailed(c.id)} />
+                    ))}
                   </div>
                 </div>
               )
             })}
           </div>
+        </div>
+
+        {/* Mobile: agenda list grouped by day */}
+        <div className="space-y-4 p-4 pt-0 md:hidden">
+          {daysWithData.length === 0 && <p className="py-6 text-center text-sm text-ink-mute">Заездов нет</p>}
+          {daysWithData.map((d) => (
+            <div key={d}>
+              <div className="mb-2 flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-ink text-sm font-bold text-white tabular-nums">
+                  {d}
+                </span>
+                <span className="text-sm font-bold text-ink">{WEEKDAYS[(d - 1) % 7]}</span>
+                <span className="text-xs text-ink-mute">· {visible.filter((c) => c.day === d).length} заезд(а)</span>
+              </div>
+              <div className="space-y-2">
+                {visible
+                  .filter((c) => c.day === d)
+                  .map((c) => (
+                    <CandidateCard key={c.id} c={c} wide onAdvance={() => advance(c.id)} onFail={() => markFailed(c.id)} />
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
       </Card>
 
@@ -130,6 +126,52 @@ export default function Arrivals() {
         объектом. Статусы заезда = стадии, при переходе на «На объекте» автоматически создаётся
         сотрудник в табеле. Source-метка показывает эффективность каналов привлечения.
       </p>
+    </div>
+  )
+}
+
+function CandidateCard({
+  c,
+  wide,
+  onAdvance,
+  onFail,
+}: {
+  c: Candidate
+  wide?: boolean
+  onAdvance: () => void
+  onFail: () => void
+}) {
+  const meta = ARRIVAL_META[c.status]
+  return (
+    <div
+      onClick={onAdvance}
+      className="group cursor-pointer rounded-xl bg-black/[0.025] p-2 transition-all duration-300 ease-spring hover:bg-black/[0.05] active:scale-[0.97]"
+      title="Клик — продвинуть статус"
+    >
+      <div className="flex items-start justify-between gap-1">
+        <span className={cx('font-bold leading-tight text-ink', wide ? 'text-sm' : 'text-xs')}>{c.name}</span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onFail()
+          }}
+          className={cx(
+            'rounded-md px-1 text-ink-mute transition-opacity hover:text-rose-500',
+            wide ? 'opacity-60' : 'opacity-0 group-hover:opacity-100',
+          )}
+          title="Отметить срыв"
+        >
+          ✕
+        </button>
+      </div>
+      <div className={cx('mt-0.5 leading-tight text-ink-mute', wide ? 'text-xs' : 'text-[10px]')}>
+        {c.specialty} · {objShort(c.object)} · {c.source}
+      </div>
+      <div className="mt-1.5">
+        <Badge tone={meta.tone} dot>
+          {meta.label}
+        </Badge>
+      </div>
     </div>
   )
 }

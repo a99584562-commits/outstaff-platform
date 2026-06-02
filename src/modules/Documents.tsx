@@ -75,7 +75,8 @@ export default function Documents() {
         <Stat label="Просрочено" value={stats.expired} tone={stats.expired ? 'rose' : 'ink'} sub="требует действий сегодня" />
       </div>
 
-      <Card pad={false}>
+      {/* Desktop: table */}
+      <Card pad={false} className="hidden md:block">
         <div className="overflow-x-auto p-2 sm:p-3">
           <table className="w-full border-separate" style={{ borderSpacing: '0 6px' }}>
             <thead>
@@ -125,6 +126,48 @@ export default function Documents() {
           </table>
         </div>
       </Card>
+
+      {/* Mobile: cards */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((p) => (
+          <Card key={p.id} pad={false}>
+            <div className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="text-sm font-bold text-ink">{p.name}</div>
+                  <div className="text-[11px] text-ink-mute">{p.citizenship}</div>
+                </div>
+                <Badge tone="slate">{objShort(p.object)}</Badge>
+              </div>
+              <div className="mt-3 space-y-2">
+                {DOC_COLS.map((c) => {
+                  const days = p[c.key]
+                  const l = level(days)
+                  const meta = LEVEL_META[l]
+                  return (
+                    <div key={c.key} className="flex items-center justify-between gap-2 rounded-xl bg-paper px-3 py-2 hairline">
+                      <span className="text-xs font-medium text-ink-soft">{c.label}</span>
+                      <div className="flex items-center gap-2">
+                        <Badge tone={meta.tone} dot>
+                          {meta.label(days)}
+                        </Badge>
+                        {(l === 'soon' || l === 'expired') && (
+                          <button
+                            onClick={() => renew(p.id, c.key)}
+                            className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold text-white transition-all duration-300 ease-spring active:scale-95"
+                          >
+                            Продлить
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
 
       <p className="mt-4 px-1 text-xs leading-relaxed text-ink-mute">
         В Битрикс24 каждый документ — поле с датой в карточке сотрудника. Робот за 14 дней до
