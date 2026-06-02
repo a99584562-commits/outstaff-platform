@@ -70,6 +70,15 @@ export default function App() {
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem(STORAGE_KEY) === '1')
   const [active, setActive] = useState<ModuleId>('overview')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [animate, setAnimate] = useState(() => localStorage.getItem('smena_anim') !== '0')
+
+  function toggleAnimate() {
+    setAnimate((a) => {
+      const next = !a
+      localStorage.setItem('smena_anim', next ? '1' : '0')
+      return next
+    })
+  }
 
   useEffect(() => {
     setMenuOpen(false)
@@ -82,7 +91,7 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] lg:flex">
-      <WaveBackground />
+      <WaveBackground animate={animate} />
       {/* Sidebar */}
       <aside
         className={cx(
@@ -156,6 +165,26 @@ export default function App() {
             <Brand compact />
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleAnimate}
+              title={animate ? 'Выключить анимацию фона' : 'Включить анимацию фона'}
+              className="hidden items-center gap-2 rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur-sm transition-colors hover:text-ink hairline sm:flex"
+            >
+              <span
+                className={cx(
+                  'relative h-4 w-7 rounded-full transition-colors duration-300',
+                  animate ? 'bg-accent' : 'bg-black/15',
+                )}
+              >
+                <span
+                  className={cx(
+                    'absolute top-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-all duration-300 ease-spring',
+                    animate ? 'left-3.5' : 'left-0.5',
+                  )}
+                />
+              </span>
+              Анимация
+            </button>
             <span className="hidden items-center gap-2 rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur-sm hairline sm:flex">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               Демо-режим
