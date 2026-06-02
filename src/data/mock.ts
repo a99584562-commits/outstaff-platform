@@ -178,22 +178,66 @@ export const PAYROLL: Record<string, Payroll> = {
   e9: { avans: 8000, housing: 7000, gear: 1500, fine: 0 },
 }
 
-// ── Проживание / общежития ──────────────────────────────────────────────────
-export interface Hostel {
+// ── Проживание: люди + объекты размещения ───────────────────────────────────
+export interface Resident {
   id: string
   name: string
   object: ObjectId
+  role: Specialty
+}
+// пул людей, которых нужно расселять (заехавшие/работающие)
+export const RESIDENTS: Resident[] = [
+  { id: 'p1', name: 'Усманов Ж.', object: 'wb-elektrostal', role: 'Комплектовщик' },
+  { id: 'p2', name: 'Каримов Р.', object: 'wb-elektrostal', role: 'Комплектовщик' },
+  { id: 'p3', name: 'Сидоров А.', object: 'wb-elektrostal', role: 'Кладовщик' },
+  { id: 'p4', name: 'Тошматов А.', object: 'wb-elektrostal', role: 'Комплектовщик' },
+  { id: 'p5', name: 'Дустов Р.', object: 'wb-elektrostal', role: 'Комплектовщик' },
+  { id: 'p6', name: 'Назаров Б.', object: 'ozon-tver', role: 'Грузчик' },
+  { id: 'p7', name: 'Петров И.', object: 'ozon-tver', role: 'Оператор ВПТ' },
+  { id: 'p8', name: 'Юлдашев К.', object: 'ozon-tver', role: 'Грузчик' },
+  { id: 'p9', name: 'Гафуров М.', object: 'ozon-tver', role: 'Комплектовщик' },
+  { id: 'p10', name: 'Холматов С.', object: 'magnit-msk', role: 'Упаковщик' },
+  { id: 'p11', name: 'Рахимов Д.', object: 'magnit-msk', role: 'Разнорабочий' },
+  { id: 'p12', name: 'Махмудов Ф.', object: 'magnit-msk', role: 'Упаковщик' },
+  { id: 'p13', name: 'Камолов И.', object: 'magnit-msk', role: 'Упаковщик' },
+  { id: 'p14', name: 'Ковалёв М.', object: 'xpark-spb', role: 'Кладовщик' },
+  { id: 'p15', name: 'Эргашев Т.', object: 'xpark-spb', role: 'Грузчик' },
+  { id: 'p16', name: 'Орлов В.', object: 'xpark-spb', role: 'Грузчик' },
+  { id: 'p17', name: 'Носов Д.', object: 'xpark-spb', role: 'Разнорабочий' },
+  { id: 'p18', name: 'Алиев Н.', object: 'xpark-spb', role: 'Кладовщик' },
+]
+export const residentById = (id: string) => RESIDENTS.find((r) => r.id === id)
+
+export type LodgingType = 'hostel' | 'apartment'
+export const LODGING_META: Record<LodgingType, { label: string; tone: string }> = {
+  hostel: { label: 'Хостел / общежитие', tone: 'slate' },
+  apartment: { label: 'Квартира', tone: 'indigo' },
+}
+
+export interface Lodging {
+  id: string
+  name: string
+  type: LodgingType
+  object: ObjectId
   address: string
   capacity: number
-  occupied: number
-  costPerBed: number // ₽/мес за койко-место
+  // hostel: ₽/мес за койко-место; apartment: ₽/мес аренда всей квартиры
+  cost: number
+  residentIds: string[]
 }
-export const HOSTELS: Hostel[] = [
-  { id: 'h1', name: 'Хостел «Восток»', object: 'wb-elektrostal', address: 'Электросталь, ул. Мира, 12', capacity: 40, occupied: 36, costPerBed: 6000 },
-  { id: 'h2', name: 'Общежитие №3', object: 'ozon-tver', address: 'Тверь, пр-т Ленина, 48', capacity: 30, occupied: 22, costPerBed: 6500 },
-  { id: 'h3', name: 'Дом для рабочих', object: 'magnit-msk', address: 'Дмитров, ул. Заводская, 5', capacity: 45, occupied: 33, costPerBed: 5500 },
-  { id: 'h4', name: 'Хостел «Север»', object: 'xpark-spb', address: 'СПб, Кубинская ул., 78', capacity: 28, occupied: 24, costPerBed: 7000 },
+export const LODGINGS: Lodging[] = [
+  { id: 'l1', name: 'Хостел «Восток»', type: 'hostel', object: 'wb-elektrostal', address: 'Электросталь, ул. Мира, 12', capacity: 10, cost: 6000, residentIds: ['p1', 'p2', 'p3'] },
+  { id: 'l2', name: '2-комн. квартира', type: 'apartment', object: 'wb-elektrostal', address: 'Электросталь, ул. Корешкова, 8', capacity: 4, cost: 55000, residentIds: ['p4', 'p5'] },
+  { id: 'l3', name: 'Общежитие №3', type: 'hostel', object: 'ozon-tver', address: 'Тверь, пр-т Ленина, 48', capacity: 8, cost: 6500, residentIds: ['p6', 'p7'] },
+  { id: 'l4', name: 'Студия', type: 'apartment', object: 'ozon-tver', address: 'Тверь, ул. Советская, 21', capacity: 2, cost: 38000, residentIds: ['p8'] },
+  { id: 'l5', name: 'Дом для рабочих', type: 'hostel', object: 'magnit-msk', address: 'Дмитров, ул. Заводская, 5', capacity: 10, cost: 5500, residentIds: ['p10', 'p11', 'p12'] },
+  { id: 'l6', name: '3-комн. квартира', type: 'apartment', object: 'magnit-msk', address: 'Дмитров, ул. Профессиональная, 14', capacity: 6, cost: 60000, residentIds: ['p13'] },
+  { id: 'l7', name: 'Хостел «Север»', type: 'hostel', object: 'xpark-spb', address: 'СПб, Кубинская ул., 78', capacity: 8, cost: 7000, residentIds: ['p14', 'p15', 'p16'] },
+  { id: 'l8', name: '1-комн. квартира', type: 'apartment', object: 'xpark-spb', address: 'СПб, ул. Маршала Казакова, 3', capacity: 3, cost: 42000, residentIds: ['p17'] },
 ]
+// итоговая стоимость объекта размещения за месяц
+export const lodgingCost = (l: Lodging) =>
+  l.type === 'apartment' ? l.cost : l.residentIds.length * l.cost
 
 // ── Портал заказчика: заявки на персонал ────────────────────────────────────
 export type RequestStatus = 'new' | 'inwork' | 'done'
