@@ -23,13 +23,13 @@ export default function WaveBackground() {
     // мерцающие частицы-искры над волной
     let sparks: { x: number; y: number; r: number; ph: number; sp: number }[] = []
     function seedSparks() {
-      const n = mobile ? 26 : 54
+      const n = mobile ? 48 : 110
       sparks = Array.from({ length: n }, () => ({
         x: Math.random(),
-        y: 0.34 + Math.random() * 0.62,
-        r: 0.8 + Math.random() * 1.8,
+        y: 0.28 + Math.random() * 0.68,
+        r: 1.1 + Math.random() * 2.6,
         ph: Math.random() * 6.28,
-        sp: 0.6 + Math.random() * 1.4,
+        sp: 0.6 + Math.random() * 1.6,
       }))
     }
 
@@ -49,45 +49,48 @@ export default function WaveBackground() {
 
     function render(t: number) {
       ctx!.clearRect(0, 0, w, h)
-      const COLS = mobile ? 46 : 84
-      const ROWS = mobile ? 26 : 38
+      const COLS = mobile ? 58 : 108
+      const ROWS = mobile ? 30 : 46
       const cx = w * 0.5
-      const horizon = h * 0.3
+      const horizon = h * 0.26
 
       for (let i = 0; i < ROWS; i++) {
         const p = Math.pow(i / (ROWS - 1), 1.7) // перспектива: ближе к низу — плотнее/крупнее
         const rowY = horizon + p * (h - horizon)
-        const size = 0.5 + p * 2.0
-        const baseA = 0.05 + p * 0.3
+        const size = 0.6 + p * 2.5
+        const baseA = 0.07 + p * 0.42
         for (let j = 0; j < COLS; j++) {
           const jx = j / (COLS - 1) - 0.5
-          const x = cx + jx * w * (0.32 + p * 1.28)
+          const x = cx + jx * w * (0.32 + p * 1.3)
           if (x < -20 || x > w + 20) continue
           const wave =
             Math.sin(jx * 5 + i * 0.42 - t * 0.9) * 0.62 +
             Math.sin(jx * 2.6 - i * 0.26 + t * 0.7) * 0.42 +
-            Math.sin(jx * 9 + i * 0.15 + t * 1.1) * 0.16
-          const y = rowY - wave * (8 + p * 66)
+            Math.sin(jx * 9 + i * 0.15 + t * 1.1) * 0.18
+          const y = rowY - wave * (10 + p * 82)
           const crest = Math.min(1, Math.max(0, wave * 0.5 + 0.5)) // 0..1, гребень волны ярче
-          const a = baseA * (0.35 + 0.65 * crest)
-          ctx!.fillStyle = `rgba(${95 + crest * 40}, ${140 + crest * 48}, ${210 + crest * 32}, ${a})`
+          const a = baseA * (0.32 + 0.68 * crest)
+          ctx!.fillStyle = `rgba(${78 + crest * 48}, ${132 + crest * 56}, ${214 + crest * 36}, ${a})`
           ctx!.beginPath()
           ctx!.arc(x, y, size, 0, 6.2832)
           ctx!.fill()
         }
       }
 
-      // искры
+      // искры со свечением
+      ctx!.shadowColor = 'rgba(150, 195, 255, 0.9)'
       for (const s of sparks) {
         const tw = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph)
-        const a = 0.12 + tw * 0.6
+        const a = 0.18 + tw * 0.72
         const x = s.x * w
         const y = s.y * h
-        ctx!.fillStyle = `rgba(${190 + tw * 50}, ${215 + tw * 30}, 255, ${a})`
+        ctx!.shadowBlur = 6 + tw * 10
+        ctx!.fillStyle = `rgba(${205 + tw * 45}, ${225 + tw * 25}, 255, ${a})`
         ctx!.beginPath()
-        ctx!.arc(x, y, s.r * (0.7 + tw * 0.6), 0, 6.2832)
+        ctx!.arc(x, y, s.r * (0.7 + tw * 0.7), 0, 6.2832)
         ctx!.fill()
       }
+      ctx!.shadowBlur = 0
     }
 
     let last = 0
