@@ -77,7 +77,7 @@ export default function Dashboard({ go }: { go: (id: ModuleId) => void }) {
         </Card>
 
         {/* Заезды / риски */}
-        <Card inner="bg-ink text-white">
+        <Card inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
           <div className="text-sm font-bold">На этой неделе</div>
           <div className="mt-4 space-y-3">
             <RiskRow label="Ожидается заездов" value={arrivalsWeek} onClick={() => go('arrivals')} />
@@ -108,9 +108,9 @@ export default function Dashboard({ go }: { go: (id: ModuleId) => void }) {
               <button
                 key={c.id}
                 onClick={() => go('contracts')}
-                className="rounded-4xl bg-black/[0.035] p-1.5 text-left hairline transition-all duration-500 ease-spring hover:-translate-y-0.5"
+                className="rounded-4xl bg-white/25 p-1.5 text-left backdrop-blur-md glass-tray transition-all duration-500 ease-spring hover:-translate-y-0.5"
               >
-                <div className="rounded-[calc(2rem-0.375rem)] bg-white p-4 hairline">
+                <div className="rounded-[calc(2rem-0.375rem)] bg-white/65 p-4 backdrop-blur-2xl glass-edge">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-ink">{c.client}</span>
                     <span className={cx('text-xs font-bold tabular-nums', pct >= 90 ? 'text-accent-deep' : 'text-amber-600')}>{pct}%</span>
@@ -146,9 +146,9 @@ function KpiCard({
   return (
     <button
       onClick={onClick}
-      className="group rounded-4xl bg-black/[0.035] p-1.5 text-left hairline transition-all duration-500 ease-spring hover:-translate-y-0.5"
+      className="group rounded-4xl bg-white/25 p-1.5 text-left backdrop-blur-md glass-tray transition-all duration-500 ease-spring hover:-translate-y-0.5"
     >
-      <div className="relative h-full rounded-[calc(2rem-0.375rem)] bg-white p-4 hairline sm:p-5">
+      <div className="relative h-full rounded-[calc(2rem-0.375rem)] bg-white/65 p-4 backdrop-blur-2xl glass-edge sm:p-5">
         <span className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-black/5 text-ink-mute transition-all duration-500 ease-spring group-hover:translate-x-0.5 group-hover:bg-accent group-hover:text-white sm:right-5 sm:top-5">
           <IconArrow className="h-3.5 w-3.5" />
         </span>

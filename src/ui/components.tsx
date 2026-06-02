@@ -31,11 +31,11 @@ export function Card({
   pad?: boolean
 }) {
   return (
-    <div className={cx('rounded-4xl bg-black/[0.035] p-1.5 hairline', className)}>
+    <div className={cx('rounded-4xl bg-white/25 p-1.5 backdrop-blur-md glass-tray', className)}>
       <div
         className={cx(
-          'h-full rounded-[calc(2rem-0.375rem)] hairline',
-          !inner && 'bg-white',
+          'h-full rounded-[calc(2rem-0.375rem)]',
+          !inner && 'bg-white/65 backdrop-blur-2xl glass-edge',
           pad && 'p-5 sm:p-6',
           inner,
         )}
@@ -64,7 +64,7 @@ export function Stat({
     rose: 'text-rose-600',
   }[tone]
   return (
-    <div className="rounded-2xl bg-paper p-4 hairline">
+    <div className="rounded-2xl bg-white/45 p-4 backdrop-blur-sm glass-edge">
       <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-mute">{label}</div>
       <div className={cx('mt-1.5 text-2xl font-extrabold tracking-tight tabular-nums', toneCls)}>
         {value}

@@ -120,7 +120,7 @@ export default function Siz() {
         </Card>
 
         {/* Выдача */}
-        <Card className="lg:col-span-2" inner="bg-ink text-white">
+        <Card className="lg:col-span-2" inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
           <div className="text-sm font-bold">Выдать комплект</div>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {EMPLOYEES.map((e) => (

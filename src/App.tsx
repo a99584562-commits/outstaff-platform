@@ -84,7 +84,7 @@ export default function App() {
       {/* Sidebar */}
       <aside
         className={cx(
-          'fixed inset-y-0 left-0 z-40 w-72 transform bg-white p-4 transition-transform duration-500 ease-spring hairline lg:static lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 w-72 transform bg-white/55 p-4 backdrop-blur-2xl transition-transform duration-500 ease-spring hairline lg:static lg:translate-x-0',
           menuOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
@@ -116,7 +116,7 @@ export default function App() {
           ))}
         </nav>
 
-        <div className="mt-6 rounded-2xl bg-paper p-4 hairline">
+        <div className="mt-6 rounded-2xl bg-white/45 p-4 backdrop-blur-sm glass-edge">
           <div className="flex items-center gap-2 text-xs font-semibold text-ink">
             <IconBitrix className="h-4 w-4 text-accent" />
             Работает поверх Битрикс24
@@ -136,10 +136,10 @@ export default function App() {
 
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-black/[0.06] bg-paper/80 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-10">
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-white/40 bg-white/45 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-10">
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white hairline lg:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 backdrop-blur-sm hairline lg:hidden"
             aria-label="Меню"
           >
             <div className="space-y-1">
@@ -154,7 +154,7 @@ export default function App() {
             <Brand compact />
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft hairline sm:flex">
+            <span className="hidden items-center gap-2 rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur-sm hairline sm:flex">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               Демо-режим
             </span>
@@ -163,7 +163,7 @@ export default function App() {
                 sessionStorage.removeItem(STORAGE_KEY)
                 location.reload()
               }}
-              className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:text-ink hairline"
+              className="rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur-sm transition-colors hover:text-ink hairline"
             >
               Выйти
             </button>
@@ -232,8 +232,8 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
         style={{ background: 'radial-gradient(circle, #0f7a5f, transparent 70%)' }}
       />
       <div className="relative w-full max-w-md animate-fade-up">
-        <div className="rounded-4xl bg-black/[0.04] p-1.5 hairline">
-          <div className="rounded-[calc(2rem-0.375rem)] bg-white p-8 hairline">
+        <div className="rounded-4xl bg-white/25 p-1.5 backdrop-blur-md glass-tray">
+          <div className="rounded-[calc(2rem-0.375rem)] bg-white/65 p-8 backdrop-blur-2xl glass-edge">
             <div className="flex items-center gap-2.5">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-lg font-extrabold text-accent">
                 С
@@ -254,7 +254,7 @@ function Gate({ onUnlock }: { onUnlock: () => void }) {
             </p>
 
             <form onSubmit={submit} className="mt-6">
-              <div className="flex items-center gap-2 rounded-2xl bg-paper px-4 hairline focus-within:ring-2 focus-within:ring-accent/30">
+              <div className="flex items-center gap-2 rounded-2xl bg-white/55 px-4 backdrop-blur-sm hairline focus-within:ring-2 focus-within:ring-accent/30">
                 <IconLock className="h-5 w-5 text-ink-mute" />
                 <input
                   autoFocus

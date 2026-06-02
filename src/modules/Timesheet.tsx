@@ -158,7 +158,7 @@ export default function Timesheet() {
             })}
           </div>
         </Card>
-        <Card inner="bg-ink text-white" >
+        <Card inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark" >
           <Badge tone="accent">Как это работает в Б24</Badge>
           <p className="mt-3 text-sm leading-relaxed text-white/80">
             Табель — это смарт-процесс с привязкой к объекту и сотруднику. Бригадир заполняет

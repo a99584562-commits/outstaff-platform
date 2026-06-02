@@ -12,11 +12,25 @@ html {
 
 body {
   margin: 0;
-  background: #f6f6f3;
+  background: #eef0ec;
   color: #14161b;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Цветной градиент-мэш под стеклянными поверхностями */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 52% at 10% 6%, rgba(15, 122, 95, 0.18), transparent 60%),
+    radial-gradient(52% 46% at 90% 2%, rgba(40, 120, 165, 0.13), transparent 55%),
+    radial-gradient(58% 52% at 80% 96%, rgba(15, 122, 95, 0.13), transparent 60%),
+    radial-gradient(52% 50% at 22% 102%, rgba(110, 100, 190, 0.10), transparent 60%);
 }
 
 /* thin, refined scrollbars */
@@ -32,4 +46,13 @@ body {
   .hairline { box-shadow: inset 0 0 0 1px rgba(20, 22, 27, 0.07); }
   .hairline-strong { box-shadow: inset 0 0 0 1px rgba(20, 22, 27, 0.12); }
   .tracking-eyebrow { letter-spacing: 0.22em; }
+  /* стеклянный поднос (внешняя обойма карточки) */
+  .glass-tray { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 1px 1px rgba(20, 22, 27, 0.03); }
+  /* стеклянная кромка с верхним бликом (внутренняя панель) */
+  .glass-edge {
+    box-shadow: inset 0 0 0 1px rgba(20, 22, 27, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 10px 30px -18px rgba(20, 22, 27, 0.25);
+  }
+  /* тёмная стеклянная панель */
+  .glass-dark { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
 }

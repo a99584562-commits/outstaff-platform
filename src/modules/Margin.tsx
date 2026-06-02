@@ -89,7 +89,7 @@ export default function Margin() {
           </div>
         </Card>
 
-        <Card className="lg:col-span-3" inner="bg-ink text-white">
+        <Card className="lg:col-span-3" inner="bg-ink/90 text-white backdrop-blur-2xl glass-dark">
           <div className="flex items-end justify-between">
             <div>
               <div className="text-xs uppercase tracking-wider text-white/55">Маржа договора / мес</div>
