@@ -1,6 +1,24 @@
 import { Badge, Card, CTA, Eyebrow, Stat, cx } from '../ui/components'
-import { IconArrow, IconSpark } from '../ui/icons'
+import {
+  IconArrow,
+  IconCalendar,
+  IconContract,
+  IconFunnel,
+  IconGrid,
+  IconShield,
+  IconSpark,
+  IconTimesheet,
+} from '../ui/icons'
 import type { ModuleId } from '../App'
+
+const FLOW: { n: string; id: ModuleId; icon: (p: { className?: string }) => JSX.Element; t: string; d: string }[] = [
+  { n: '01', id: 'recruitment', icon: IconFunnel, t: 'Подбор и проверка', d: 'Быстрый подбор сотрудников, проверка документов, верификация.' },
+  { n: '02', id: 'contracts', icon: IconContract, t: 'Договоры и документы', d: 'Автоматическое формирование договоров, актов, закрывающих.' },
+  { n: '03', id: 'timesheet', icon: IconTimesheet, t: 'Табель и учёт рабочего времени', d: 'Точные табели, учёт часов, переработок и отклонений в реальном времени.' },
+  { n: '04', id: 'arrivals', icon: IconCalendar, t: 'Заезды и объекты', d: 'Управление заездами, объектами, локациями и клиентами в одном окне.' },
+  { n: '05', id: 'documents', icon: IconShield, t: 'Патенты и допуски', d: 'Контроль сроков патентов, медкнижек, допусков и уведомления.' },
+  { n: '06', id: 'dashboard', icon: IconGrid, t: 'Аналитика и отчёты', d: 'Сводная аналитика по сотрудникам, объектам, клиентам и финансам.' },
+]
 
 const PAINS = [
   { p: 'Табели в Excel и WhatsApp', s: 'Часы теряются, спорные смены, ручная сверка с заказчиком и ЗП' },
@@ -79,6 +97,49 @@ export default function Overview({ go }: { go: (id: ModuleId) => void }) {
               <p className="mt-2 text-xs leading-relaxed text-ink-mute">{x.s}</p>
             </Card>
           ))}
+        </div>
+      </div>
+
+      {/* How it works — маршрут */}
+      <div>
+        <Eyebrow>Как это работает — от подбора до отчёта</Eyebrow>
+        <div className="relative mt-6 pl-0">
+          {/* светящаяся линия-коннектор */}
+          <div className="pointer-events-none absolute left-7 top-8 bottom-10 w-px overflow-visible">
+            <div className="absolute inset-0 bg-gradient-to-b from-accent/0 via-accent/50 to-accent/0" />
+            <span className="flow-pulse absolute left-1/2 h-12 w-[3px] -translate-x-1/2 rounded-full" />
+          </div>
+
+          <div className="space-y-3">
+            {FLOW.map((s) => {
+              const Icon = s.icon
+              return (
+                <button
+                  key={s.n}
+                  onClick={() => go(s.id)}
+                  className="group relative grid w-full grid-cols-[56px_1fr] items-center gap-4 text-left sm:gap-5"
+                >
+                  {/* под с иконкой */}
+                  <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-soft text-accent-deep ring-1 ring-accent/25 shadow-[0_8px_24px_-10px_rgba(15,122,95,0.5)] transition-all duration-500 ease-spring group-hover:-translate-y-0.5 group-hover:bg-accent group-hover:text-white group-hover:shadow-[0_12px_30px_-8px_rgba(15,122,95,0.65)]">
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  {/* карточка-стекло */}
+                  <div className="flex items-center justify-between gap-4 rounded-3xl p-4 glass-pane transition-all duration-500 ease-spring group-hover:-translate-y-0.5 sm:p-5">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-sm font-extrabold tabular-nums text-accent-deep">{s.n}</span>
+                        <span className="truncate text-sm font-bold text-ink sm:text-base">{s.t}</span>
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-ink-soft sm:text-[13px]">{s.d}</p>
+                    </div>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/5 text-ink-mute transition-all duration-500 ease-spring group-hover:translate-x-0.5 group-hover:bg-accent group-hover:text-white">
+                      <IconArrow className="h-4 w-4" />
+                    </span>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
