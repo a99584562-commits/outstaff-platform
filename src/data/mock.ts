@@ -309,6 +309,15 @@ export interface SizIssue {
   cost: number
 }
 
+// ── Ряды для дашборда руководителя ──────────────────────────────────────────
+export const DASH_MONTHS = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн']
+export const REVENUE_PLAN = [11.2, 11.8, 12.0, 12.3, 12.6, 12.8] // ₽ млн / мес
+export const REVENUE_FACT = [9.8, 10.1, 10.9, 10.4, 11.2, 10.6]
+export const FILL_SERIES = [66, 70, 69, 72, 71, 74] // укомплектованность %
+export const MARGIN_SERIES = [1.8, 1.9, 2.2, 2.0, 2.4, 2.3] // ₽ млн
+export const DOCRISK_SERIES = [9, 7, 8, 6, 7, 5] // документов под риском
+export const ARRIVALS_WEEK = [2, 2, 0, 1, 2, 0, 1] // заезды по дням недели
+
 export const fmt = (n: number) => n.toLocaleString('ru-RU')
 export const fmtMoney = (n: number) => '₽ ' + n.toLocaleString('ru-RU')
 export const fmtMoneyShort = (n: number) =>
